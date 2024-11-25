@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Daily Checklist</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="apple-touch-icon" href="favicon.png">
+    <meta name="apple-mobile-web-app-title" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://www.cpr.org/wp-content/uploads/2020/08/Colorado-Wildfires-Smoke-Sunset.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            color: white; 
+            height: 100vh; 
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.5); 
+            color: white;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed; 
+            width: 100%;
+            top: 0;
+            z-index: 100; 
+        }
+
+        .navbar-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 25px 20px;
+            display: inline-block;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: -10px;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: black;
+            transform: scale(1.1); 
+        }
+
+        .checklist-container {
+            margin-top: 150px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .checklist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checklist-item span {
+            font-size: 18px;
+            color: white;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            height: 25px;
+            margin-left: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            text-align: center;
+            color: white;
+            line-height: 25px;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-start; 
+            margin-bottom: 15px; 
+        }
+
+        .input-container input {
+            width: 100%; 
+            margin-bottom: 10px; 
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-container button {
+            padding: 10px 15px;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            width: 100%; 
+            font-size: 16px;
+        }
+
+        .input-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1 class="navbar-title">Daily Habit Tracker</h1>
+        <div>
+            <a href="https://www.timeanddate.com/calendar/">Calendar</a>
+            <a href="#tasks">Tasks</a>
+            <a href="#about">About</a>
+        </div>
+    </div>
+
+    <!-- Checklist and Progress Bar -->
+    <div class="checklist-container">
+        <h2>Daily Checklist</h2>
+
+        <!-- Water Tracker -->
+        <div class="checklist-item">
+            <span>Glasses of water drunk</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="waterProgressBar">0%</div>
+            </div>
+        </div>
+
+        <!-- User Input for Water -->
+        <div class="checklist-item">
+            <div class="input-container">
+                <input type="number" id="waterInput" value="0" min="0" max="16" />
+                <button onclick="updateWaterProgress()">Update</button>
+            </div>
+        </div>
+
+        <!-- Weight Tracker -->
+        <div class="checklist-item">
+            <span>Max weight lifted today (goal: 500 lbs)</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="weightProgressBar">0%</div>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <div class="input-container">
+                <input type="number" id="weightLifted" value="0" min="0" max="500" />
+                <button onclick="updateTotalMaxLift()">Update</button>
+            </div>
+        </div>
+
+        <!-- BMR Tracker -->
+        <div class="checklist-item">
+            <span>BMR for today</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="bmrProgressBar">Kcal</div>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <div class="input-container">
+                <p>Sex: </p>
+                <input type="text" id="sex" value="N/A" />
+                <p>Weight (kg): </p>
+                <input type="number" id="weight" value="0" min="0" max="1000" />
+                <p>Height (cm): </p>
+                <input type="number" id="height" value="0" min="0" max="500" />
+                <p>Age (years): </p>
+                <input type="number" id="age" value="0" min="0" max="100" />
+                <p>Activity factor (1.2-1.9): </p>
+                <input type="number" id="activity-factor" value="1.2" min="1.2" max="1.9" />
+                <p>Desired calorie deficit: </p>
+                <input type="number" id="desired-calorie-deficit" value="0" min="0" max="10000" />
+                <button onclick="updateBMR()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create the elements of the glasses drunk container
+        const totalWaterGlasses = 16;  
+        const waterProgressBar = document.getElementById('waterProgressBar');
+        const waterInput = document.getElementById('waterInput');
+
+        function updateWaterProgress() {
+            const drunkWaterGlasses = parseInt(waterInput.value);
+            
+            if (drunkWaterGlasses > totalWaterGlasses) {
+                waterInput.value = totalWaterGlasses;
+                return;
+            } else if (drunkWaterGlasses < 0) {
+                waterInput.value = 0;
+                return;
+            }
+
+            const waterPercentage = (drunkWaterGlasses / totalWaterGlasses) * 100;
+
+            waterProgressBar.style.width = waterPercentage + '%';
+            waterProgressBar.textContent = Math.round(waterPercentage) + '%'; 
+        }
+
+        // Create the elements of the weight lifting box
+        const totalWeightLifted = 500;
+        const weightProgressBar = document.getElementById('weightProgressBar');
+        const weightInput = document.getElementById('weightLifted');
+
+        function updateTotalMaxLift() {
+            const maxWeightLifted = parseInt(weightInput.value);
+
+            if (maxWeightLifted > totalWeightLifted) {
+                weightInput.value = totalWeightLifted;
+                return;
+            } else if (maxWeightLifted < 0) {
+                weightInput.value = 0;
+                return;
+            }
+
+            const weightPercentage = (maxWeightLifted / totalWeightLifted) * 100;
+
+            weightProgressBar.style.width = weightPercentage + '%';
+            weightProgressBar.textContent = Math.round(weightPercentage) + '%';
+        }
+
+        // BMR Calculator
+        function updateBMR() {
+            const sexInput = document.getElementById('sex').value.trim().toUpperCase();
+            const heightInput = parseInt(document.getElementById('height').value);
+            const weightInput2 = parseInt(document.getElementById('weight').value);
+            const ageInput = parseInt(document.getElementById('age').value);
+            const activityFactorInput = parseFloat(document.getElementById('activity-factor').value);
+            const desiredCalorieDeficit = parseInt(document.getElementById('desired-calorie-deficit').value);
+
+            // Validation
+            if (sexInput !== 'M' && sexInput !== 'F') {
+                alert("Please enter a valid sex (M or F).");
+                return;
+            }
+
+            if (heightInput < 0 || heightInput > 500) {
+                alert("Please enter a valid height.");
+                return;
+            }
+
+            if (weightInput2 < 0 || weightInput2 > 1000) {
+                alert("Please enter a valid weight.");
+                return;
+            }
+
+            if (ageInput < 0 || ageInput > 100) {
+                alert("Please enter a valid age.");
+                return;
+            }
+
+            if (activityFactorInput < 1.2 || activityFactorInput > 1.9) {
+                alert("Please enter a valid activity factor between 1.2 and 1.9.");
+                return;
+            }
+
+            // Calculate BMR
+            let BMR;
+            if (sexInput === 'M') {
+                BMR = (10 * weightInput2 + 6.25 * heightInput - 5 * ageInput + 5) * activityFactorInput;
+            } else if (sexInput === 'F') {
+                BMR = (10 * weightInput2 + 6.25 * heightInput - 5 * ageInput - 161) * activityFactorInput;
+            }
+
+            // Subtract desired calorie deficit
+            BMR -= desiredCalorieDeficit;
+
+            // Display the result
+            const bmrProgressBar = document.getElementById('bmrProgressBar');
+            bmrProgressBar.textContent = `BMR: ${Math.round(BMR)} kcal`;
+            bmrProgressBar.style.width = '100%'; // You can modify this to visualize progress if needed.
+        }
+    </script>
+    </body>
+</html>
