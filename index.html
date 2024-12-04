@@ -25,6 +25,10 @@
             height: 100vh; 
         }
 
+        h2 {
+            text-align: center;
+        }
+
         .navbar {
             background: rgba(0, 0, 0, 0.5); 
             color: white;
@@ -124,12 +128,59 @@
             border-radius: 5px;
             color: white;
             cursor: pointer;
-            width: 100%; 
             font-size: 16px;
         }
 
         .input-container button:hover {
             background-color: #45a049;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 820px;
+            margin: 20px auto;
+        }
+
+        .input-container button {
+            padding: 10px 15px;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .input-container button:hover {
+            background-color: #45a049;
+        }
+
+        .input-container textarea {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+        }
+
+        .task-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: #333;
+            border-radius: 8px;
+        }
+
+        .task-content {
+            margin-top: 10px;
+            font-size: 16px;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -205,9 +256,73 @@
                 <button onclick="updateBMR()">Update</button>
             </div>
         </div>
+
+        <!-- Calorie Tracker -->
+        <div class="checklist-item">
+            <span>Calorie Tracker</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="calorieTracker">Kcal</div>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <div class="input-container">
+                <p>Max calories:</p>
+                <input type="number" id="maxCalories" value="0" />
+                <p>Calories consumed:</p>
+                <input type="number" id="consumedCalories" value="0" />
+                <button onclick="updateConsumedCalories()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Task #1</h2>
+        <p id="paragraph">Mein Hund hat sieben Uhr gestern geschlafen. Am Mittwoch um 21:00 Uhr haben sie in meinem Zimmer mit mir im Bett geschlafen. Das Zimmer war sehr heiß, deshalb habe ich das Fenster geöffnet. Ich würde die Zimmer dreißig Grad Celsius sagen, aber die Temperaturen waren plötzlich bis zu fünfundzwanzig Grad später. Es war meistens mein Schlafzimmer, aber das Wohnzimmer war sehr frieren. Nachdem ich geschlafen habe, ging ich in die Küche für den Frustruck. Ich hatte einen Apfel mit Erdnussbutter und Honig, und Haferflocken mit Zimt, es war sehr lecker im Geschmack. Es war ein Schultag. Es war 6:00 Uhr am Montag. Später habe ich meinen Rucksack, Kopfhörer und Brillen gebracht. Ich putze einen Bleistift in meine Tasche. Ich habe im Badezimmer geduscht und das Fenster zum Vermieten die Dampft geöffnet. Nach der Schule habe ich Schach mit meinen Freunden gespielt. Wir spielten etwa neunzig Minuten, bis ich gehen musste. Als ich nach Hause kam, hat mein Hund geregnet. Dann ging ich in die Zoohandlung, um ein paar Katzen zu streicheln, während meine Mutter im Bekleidungsgeschäft einkaufen war. Sie hat auch im Haustiergeschäft ein Spielzeug für den Hund gekauft. 
+        </p>
+        <h2>Task #2</h2>
+        <p id="paragraph">Wenn es Muttertag ist, werde ich Lilien und Rosen für meine Mutter kaufen. Nachdem es Muttertag ist, werde ich nach Glenbrook South fahren. Nach der Schule will ich viele Horror-Videospiele spielen und bei GameStop kaufen. Nachdem es Videospiele kaufen ist, werde ich zum Bäcker Brot, Toast, Brötchen und rustikalem-Italienisch Brot kaufen und zum Metzgerei Wurst, Schweinekotelett, Rindersteaks, zum Beispiel Rib Eye, Filet Steak, T-Bone, Entrecôte, oder Sirloin kaufen. Seit es heiss aussen ist, werde ich zum öffentlichen Schwimmbad in meinem Badeanzug schwimmen. Ich werde zur Hochzeit in einer Limousine mit meinem schwarzen Anzug fahren, wo Frau Becker und Herr Becker engagieren. Mein ganze Familie ist zur Hochzeit von Frau Becker und Herr Becker gekommen. Nach der Hochzeit habe ich meine Mutter für 20 Minuten gerufen. 
+        </p>
+        <h2>Task #3</h2>
+        <p id="paragraph">Mein Bruder und ich fahren nächsten Sommer zusammen nach Italien, um die historischen Städte zu besichtigen. Ich habe gestern ein interessantes Buch über die Geschichte der deutschen Sprache gelesen. Es ist wichtig, regelmäßig Sport zu treiben, um gesund zu bleiben und sich fit zu fühlen. Obwohl das Wetter heute schlecht und launisch ist, werde ich trotzdem spazieren gehen, um frische Luft zu schnappen. Ich liebe es, neue Rezepte auszuprobieren, besonders wenn ich für meine Freunde koche. Letztes Wochenende haben wir einen Ausflug in die Berge gemacht und die wunderschöne Aussicht genossen. Wenn ich genug Zeit habe, möchte ich ein neues Hobby anfangen, wie zum Beispiel Malen oder Töpfern. 
+        </p>
+        <div class="input-container">
+            <textarea id="taskMessage" placeholder="Write your task message here..." rows="4" cols="50"></textarea>
+            <button onclick="createNewTask()">Create Task</button>
+        </div>
     </div>
 
     <script>
+        // Create the calculation of calories consumed
+        const maxCalories = document.getElementById("maxCalories");
+        const consumedCalories = document.getElementById("consumedCalories");
+        const calorieTracker = document.getElementById("calorieTracker");
+        const remainingCaloriesElement = document.getElementById("remainingCalories");
+
+        function updateConsumedCalories() {
+            const max = parseInt(maxCalories.value);
+            const consumed = parseInt(consumedCalories.value);
+
+            if (consumed < 0) {
+                alert("Calories consumed can't be less than zero.");
+                consumedCalories.value = 0;
+            } else if (consumed > max) {
+                alert("You have exceeded your calorie goal.");
+                consumedCalories.value = max; 
+            }
+
+            const remainingCalories = max - consumed;
+
+            remainingCaloriesElement.textContent = `Remaining Calories: ${remainingCalories}`;
+
+            const percentageConsumed = (consumed / max) * 100;
+            calorieTracker.style.width = `${percentageConsumed}%`;
+
+            calorieTracker.textContent = `${consumed} / ${max} Kcal`;
+
+            return remainingCalories;
+        }
+
         // Create the elements of the glasses drunk container
         const totalWaterGlasses = 16;  
         const waterProgressBar = document.getElementById('waterProgressBar');
@@ -261,7 +376,6 @@
             const activityFactorInput = parseFloat(document.getElementById('activity-factor').value);
             const desiredCalorieDeficit = parseInt(document.getElementById('desired-calorie-deficit').value);
 
-            // Validation
             if (sexInput !== 'M' && sexInput !== 'F') {
                 alert("Please enter a valid sex (M or F).");
                 return;
@@ -295,14 +409,42 @@
                 BMR = (10 * weightInput2 + 6.25 * heightInput - 5 * ageInput - 161) * activityFactorInput;
             }
 
-            // Subtract desired calorie deficit
             BMR -= desiredCalorieDeficit;
 
-            // Display the result
             const bmrProgressBar = document.getElementById('bmrProgressBar');
             bmrProgressBar.textContent = `BMR: ${Math.round(BMR)} kcal`;
-            bmrProgressBar.style.width = '100%'; // You can modify this to visualize progress if needed.
+            bmrProgressBar.style.width = '100%'; 
+        }
+
+        // Create a new task element
+        function createNewTask() {
+            const taskMessage = document.getElementById('taskMessage').value;
+
+            if (taskMessage === "") {
+                alert("Please write a task message before creating a task.");
+                return;
+            }       
+            
+            const taskList = document.getElementById('taskList');
+
+            const newTaskContainer = document.createElement('div');
+            newTaskContainer.classList.add('task-container');
+    
+            const taskCount = document.querySelectorAll('.task-container').length + 1;
+            const newTaskTitle = document.createElement('h2');
+            newTaskTitle.textContent = `Task #${taskCount}`;
+    
+            const newTaskDiv = document.createElement('div');
+            newTaskDiv.classList.add('task-content');
+            newTaskDiv.textContent = taskMessage; 
+    
+            newTaskContainer.appendChild(newTaskTitle);
+            newTaskContainer.appendChild(newTaskDiv);
+
+            taskList.appendChild(newTaskContainer);
+
+            document.getElementById('taskMessage').value = '';
         }
     </script>
-    </body>
+</body>
 </html>
